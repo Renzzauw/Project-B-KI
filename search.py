@@ -81,12 +81,28 @@ def depthFirstSearch(problem):
 
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
-
+    """
     print "Start:", problem.getStartState()
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    """
-    "*** YOUR CODE HERE ***"
+    
+    startTuple = (problem.getStartState(), 'None', 1, [])
+    stack = util.Stack()
+    stack.push(startTuple)
+
+    while not stack.isEmpty():
+        firstElement = stack.pop()
+        pos = firstElement[0]
+        beenHere = firstElement[3]
+        print pos
+        beenHere.append(pos)
+        succ = problem.getSuccessors(pos)
+        #print succ
+        for suc in succ:
+            if not suc[0] in beenHere:
+                if not problem.isGoalState(suc[0]):
+                    stack.push(suc + (beenHere,))
+
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
