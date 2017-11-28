@@ -82,28 +82,53 @@ def depthFirstSearch(problem):
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
     """
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    
-    startTuple = (problem.getStartState(), 'None', 1, [])
+    #print "Start:", problem.getStartState()
+    #print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    #print "Start's successors:", problem.getSuccessors(problem.getStartState())
+
+    beenhere = []
+    parents = dict()
+    starttuple = (problem.getStartState(), 'None', 1)
     stack = util.Stack()
-    stack.push(startTuple)
+    stack.push(starttuple)
 
     while not stack.isEmpty():
-        firstElement = stack.pop()
-        pos = firstElement[0]
-        beenHere = firstElement[3]
-        print pos
-        beenHere.append(pos)
-        succ = problem.getSuccessors(pos)
-        #print succ
-        for suc in succ:
-            if not suc[0] in beenHere:
-                if not problem.isGoalState(suc[0]):
-                    stack.push(suc + (beenHere,))
+        firstelement = stack.pop()
+        pos = firstelement[0]
 
-    util.raiseNotDefined()
+        if problem.isGoalState(pos):
+            break
+
+        #print pos
+
+        beenhere.append(pos)
+        succ = problem.getSuccessors(pos)
+
+        #print succ
+
+        for suc in succ:
+            if not suc[0] in beenhere:
+
+                #print "pushing ", suc
+
+                parents[suc] = firstelement
+                stack.push(suc)
+
+    #print "Final pos ", pos
+
+    movements = []
+    lastpos = firstelement
+    while not lastpos[1] == 'None':
+        movements.append(lastpos[1])
+        lastpos = parents[lastpos]
+
+    movements.reverse()
+
+    #print movements
+
+    return movements
+
+    #util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
