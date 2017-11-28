@@ -140,8 +140,35 @@ def breadthFirstSearch(problem):
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    beenhere = []
+    parents = dict()
+    cost = 0
+    starttuple = (problem.getStartState(), 'None', 0)
+    stack = util.PriorityQueue()
+    stack.push(starttuple, cost)
+
+    while not stack.isEmpty():
+        firstelement = stack.pop()
+        pos = firstelement[0]
+        cost = firstelement[2]
+        if problem.isGoalState(pos):
+            break
+        beenhere.append(pos)
+        for suc in problem.getSuccessors(pos):
+            if not suc[0] in beenhere:
+                parents[(suc[0], suc[1])] = (firstelement[0], firstelement[1])
+                newtuple = (suc[0], suc[1], suc[2] + cost)
+                stack.push(newtuple, newtuple[2])
+
+    movements = []
+    lastpos = (firstelement[0], firstelement[1])
+    while not lastpos[1] == 'None':
+        movements.append(lastpos[1])
+        lastpos = parents[lastpos]
+
+    movements.reverse()
+    return movements
 
 def nullHeuristic(state, problem=None):
     """
