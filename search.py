@@ -82,9 +82,6 @@ def depthFirstSearch(problem):
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
     """
-    #print "Start:", problem.getStartState()
-    #print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    #print "Start's successors:", problem.getSuccessors(problem.getStartState())
 
     beenhere = []
     parents = dict()
@@ -95,26 +92,13 @@ def depthFirstSearch(problem):
     while not stack.isEmpty():
         firstelement = stack.pop()
         pos = firstelement[0]
-
         if problem.isGoalState(pos):
             break
-
-        #print pos
-
         beenhere.append(pos)
-        succ = problem.getSuccessors(pos)
-
-        #print succ
-
-        for suc in succ:
+        for suc in problem.getSuccessors(pos):
             if not suc[0] in beenhere:
-
-                #print "pushing ", suc
-
                 parents[suc] = firstelement
                 stack.push(suc)
-
-    #print "Final pos ", pos
 
     movements = []
     lastpos = firstelement
@@ -123,17 +107,36 @@ def depthFirstSearch(problem):
         lastpos = parents[lastpos]
 
     movements.reverse()
-
-    #print movements
-
     return movements
-
-    #util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    beenhere = []
+    parents = dict()
+    starttuple = (problem.getStartState(), 'None', 1)
+    stack = util.Queue()
+    stack.push(starttuple)
+
+    while not stack.isEmpty():
+        firstelement = stack.pop()
+        pos = firstelement[0]
+        if problem.isGoalState(pos):
+            break
+        beenhere.append(pos)
+        for suc in problem.getSuccessors(pos):
+            if not suc[0] in beenhere:
+                parents[suc] = firstelement
+                stack.push(suc)
+
+    movements = []
+    lastpos = firstelement
+    while not lastpos[1] == 'None':
+        movements.append(lastpos[1])
+        lastpos = parents[lastpos]
+
+    movements.reverse()
+    return movements
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
