@@ -107,8 +107,7 @@ def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
 
     beenhere = []
-    parents = dict()
-    starttuple = (problem.getStartState(), 'None', 1)
+    starttuple = (problem.getStartState(), [], 0)
     stack = util.Queue()
     stack.push(starttuple)
 
@@ -122,17 +121,10 @@ def breadthFirstSearch(problem):
         beenhere.append(pos)
         for suc in problem.getSuccessors(pos):
             if not suc[0] in beenhere:
-                parents[suc] = firstelement
-                stack.push(suc)
-
-    movements = []
-    lastpos = firstelement
-    while not lastpos[1] == 'None':
-        movements.append(lastpos[1])
-        lastpos = parents[lastpos]
-
-    movements.reverse()
-    return movements
+                newdir = suc[1]
+                newtuple = (suc[0], firstelement[1] + [newdir], suc[2])
+                stack.push(newtuple)
+    return firstelement[1]
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
