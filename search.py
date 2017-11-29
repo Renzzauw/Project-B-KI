@@ -91,17 +91,18 @@ def depthFirstSearch(problem):
     while not stack.isEmpty():
         firstelement = stack.pop()
         pos = firstelement[0]
+        path = firstelement[1]
         if pos in beenhere:
             continue
         if problem.isGoalState(pos):
-            break
+            return path
         beenhere.append(pos)
         for suc in problem.getSuccessors(pos):
             if not suc[0] in beenhere:
                 newdir = suc[1]
-                newtuple = (suc[0], firstelement[1] + [newdir], suc[2])
+                newtuple = (suc[0], path + [newdir], suc[2])
                 stack.push(newtuple)
-    return firstelement[1]
+    return []
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
@@ -114,51 +115,43 @@ def breadthFirstSearch(problem):
     while not stack.isEmpty():
         firstelement = stack.pop()
         pos = firstelement[0]
+        path = firstelement[1]
         if pos in beenhere:
             continue
         if problem.isGoalState(pos):
-            break
+            return path
         beenhere.append(pos)
         for suc in problem.getSuccessors(pos):
             if not suc[0] in beenhere:
                 newdir = suc[1]
-                newtuple = (suc[0], firstelement[1] + [newdir], suc[2])
+                newtuple = (suc[0], path + [newdir], suc[2])
                 stack.push(newtuple)
-    return firstelement[1]
+    return []
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
 
     beenhere = []
-    parents = dict()
-    cost = 0
-    starttuple = (problem.getStartState(), 'None', 0)
+    starttuple = (problem.getStartState(), [], 0)
     stack = util.PriorityQueue()
-    stack.push(starttuple, cost)
+    stack.push(starttuple, 0)
 
     while not stack.isEmpty():
         firstelement = stack.pop()
         pos = firstelement[0]
+        path = firstelement[1]
         cost = firstelement[2]
         if pos in beenhere:
             continue
         if problem.isGoalState(pos):
-            break
+            return path
         beenhere.append(pos)
         for suc in problem.getSuccessors(pos):
             if not suc[0] in beenhere:
-                parents[(suc[0], suc[1])] = (firstelement[0], firstelement[1])
-                newtuple = (suc[0], suc[1], suc[2] + cost)
+                newdir = suc[1]
+                newtuple = (suc[0], path + [newdir], suc[2] + cost)
                 stack.push(newtuple, newtuple[2])
-
-    movements = []
-    lastpos = (firstelement[0], firstelement[1])
-    while not lastpos[1] == 'None':
-        movements.append(lastpos[1])
-        lastpos = parents[lastpos]
-
-    movements.reverse()
-    return movements
+    return []
 
 def nullHeuristic(state, problem=None):
     """
