@@ -83,33 +83,25 @@ def depthFirstSearch(problem):
     understand the search problem that is being passed in:
     """
 
-    beenhere = []
-    parents = dict()
-    starttuple = (problem.getStartState(), 'None', 1)
+    lijstje = []
+    starttuple = (problem.getStartState(), [], 0)
     stack = util.Stack()
     stack.push(starttuple)
 
     while not stack.isEmpty():
         firstelement = stack.pop()
         pos = firstelement[0]
-        if pos in beenhere:
+        if pos in lijstje:
             continue
         if problem.isGoalState(pos):
             break
-        beenhere.append(pos)
+        lijstje.append(pos)
         for suc in problem.getSuccessors(pos):
-            if not suc[0] in beenhere:
-                parents[suc] = firstelement
-                stack.push(suc)
-
-    movements = []
-    lastpos = firstelement
-    while not lastpos[1] == 'None':
-        movements.append(lastpos[1])
-        lastpos = parents[lastpos]
-
-    movements.reverse()
-    return movements
+            if not suc[0] in lijstje:
+                newdir = suc[1]
+                newtuple = (suc[0], firstelement[1] + [newdir], suc[2])
+                stack.push(newtuple)
+    return firstelement[1]
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
