@@ -83,7 +83,7 @@ def depthFirstSearch(problem):
     understand the search problem that is being passed in:
     """
 
-    lijstje = []
+    beenhere = []
     starttuple = (problem.getStartState(), [], 0)
     stack = util.Stack()
     stack.push(starttuple)
@@ -91,13 +91,13 @@ def depthFirstSearch(problem):
     while not stack.isEmpty():
         firstelement = stack.pop()
         pos = firstelement[0]
-        if pos in lijstje:
+        if pos in beenhere:
             continue
         if problem.isGoalState(pos):
             break
-        lijstje.append(pos)
+        beenhere.append(pos)
         for suc in problem.getSuccessors(pos):
-            if not suc[0] in lijstje:
+            if not suc[0] in beenhere:
                 newdir = suc[1]
                 newtuple = (suc[0], firstelement[1] + [newdir], suc[2])
                 stack.push(newtuple)
