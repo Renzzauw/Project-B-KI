@@ -92,6 +92,8 @@ def depthFirstSearch(problem):
     while not stack.isEmpty():
         firstelement = stack.pop()
         pos = firstelement[0]
+        if pos in beenhere:
+            continue
         if problem.isGoalState(pos):
             break
         beenhere.append(pos)
@@ -121,6 +123,8 @@ def breadthFirstSearch(problem):
     while not stack.isEmpty():
         firstelement = stack.pop()
         pos = firstelement[0]
+        if pos in beenhere:
+            continue
         if problem.isGoalState(pos):
             break
         beenhere.append(pos)
@@ -152,6 +156,8 @@ def uniformCostSearch(problem):
         firstelement = stack.pop()
         pos = firstelement[0]
         cost = firstelement[2]
+        if pos in beenhere:
+            continue
         if problem.isGoalState(pos):
             break
         beenhere.append(pos)
