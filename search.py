@@ -116,7 +116,6 @@ def breadthFirstSearch(problem):
         firstelement = stack.pop()
         pos = firstelement[0]
         path = firstelement[1]
-        print path
         if pos in beenhere:
             continue
         if problem.isGoalState(pos):
