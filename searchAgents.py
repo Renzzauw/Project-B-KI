@@ -361,6 +361,17 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
+
+    distances = []
+    for corner in state[1]:
+        pos = state[0]
+        distance = util.manhattanDistance(pos, corner)
+        distances.append(distance)
+
+    if len(distances) > 0:
+        maxDistance = max(distances)
+        return maxDistance
+
     return 0 # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
@@ -454,8 +465,17 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-    "*** YOUR CODE HERE ***"
-    return 0
+    distances = []
+    for fooddot in foodGrid.asList():
+        distance = mazeDistance(position, fooddot, problem.startingGameState)
+        distances.append(distance)
+
+
+    if len(distances) > 0:
+        maxDistance = max(distances)
+        return maxDistance
+
+    return 0 # Default to trivial solution
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
@@ -481,12 +501,10 @@ class ClosestDotSearchAgent(SearchAgent):
         """
         # Here are some useful elements of the startState
         startPosition = gameState.getPacmanPosition()
-        food = gameState.getFood()
+        food = gameState.getFood().asList()
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
-
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return search.uniformCostSearch(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -519,10 +537,8 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         The state is Pacman's position. Fill this in with a goal test that will
         complete the problem definition.
         """
-        x,y = state
-
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        x, y = state
+        return self.food[x][y]
 
 def mazeDistance(point1, point2, gameState):
     """
